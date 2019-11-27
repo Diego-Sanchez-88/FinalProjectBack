@@ -13,5 +13,14 @@ router.get('/', (req, res) => {
         });
 });
 
+router.get('/registro', (req, res) => {
+    Usuario.nuevoUsuario()
+        .then(rows => {
+            res.send(rows);
+        }).catch(err => {
+            console.log(err);
+        });
+});
+
 
 module.exports = router;

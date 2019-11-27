@@ -1,11 +1,6 @@
-const getAll = () => {
-    // console.log('función getAll');
-    // db.query('select * from usuarios', (err, rows) => {
-    //     if (err) return console.log(err);
-    //     console.log(rows);
-    // });
+const nuevoUsuario = () => {
     return new Promise((resolve, reject) => {
-        db.query('select * from usuarios', (err, rows) => {
+        db.query('INSERT INTO usuarios (nombre, username, email, edad) VALUES ("mikhael", "ermikha", "mikmik@gmail.com", 15)', (err, rows) => {
             if (err) return reject(err);
             resolve(rows);
         });
@@ -16,5 +11,5 @@ const getAll = () => {
 
 
 module.exports = {
-    getAll: getAll
+    nuevoUsuario: nuevoUsuario
 }
