@@ -3,10 +3,12 @@ const router = express.Router();
 
 const Usuario = require('../models/usuario');
 
-// GET http:///localhost:3000/api/usuarios
-router.get('/', async (req, res) => {
-    const rows = await Usuario.getAll();
-    res.json(rows);
+
+
+// POST http://localhost:3000/api/usuarios
+router.post('/', async (req, res) => {
+    const result = await Usuario.nuevoUsuario(req.body);
+    res.json(result);
 });
 
 module.exports = router;
