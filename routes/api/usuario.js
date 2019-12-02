@@ -3,10 +3,6 @@ const router = express.Router();
 
 const Usuario = require('../../models/usuario');
 
-router.get('/new', (req, res) => {
-    // res.send('qué pasa'); // --> esto funciona en GET http://localhost:3000/api/usuario/new
-    res.json(req.body);
-});
 
 router.post('/registro', (req, res) => {
     Usuario.nuevoUsuario(req.body)
