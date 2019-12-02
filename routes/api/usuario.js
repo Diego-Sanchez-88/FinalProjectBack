@@ -17,7 +17,7 @@ router.post('/registro', (req, res) => {
             console.log(err);
         });
 });
-// esto funciona en POST http://localhost:3000/api/usuarios/registro  --> con esto se están insertando en postman, está funcionando en res.send
+// esto funciona en POST http://localhost:3000/api/usuario/registro  --> con esto se están insertando en postman, está funcionando en res.send
 
 router.get('/:usuarioId', (req, res) => {
     // console.log(req.params.usuarioId);
@@ -28,7 +28,7 @@ router.get('/:usuarioId', (req, res) => {
             console.log(err);
         })
 });
-// esto funciona en GET http://localhost:3000/api/usuarios/:id
+// esto funciona en GET http://localhost:3000/api/usuario/:id
 
 module.exports = router;
 
