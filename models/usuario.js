@@ -1,6 +1,6 @@
-const nuevoUsuario = ({ nombre, username, email, edad }) => {
+const nuevoUsuario = ({ nombre, username, email, edad, password }) => {
     return new Promise((resolve, reject) => {
-        db.query('INSERT INTO usuarios (nombre, username, email, edad) VALUES (?,?,?,?)', [nombre, username, email, edad], (err, rows) => {
+        db.query('INSERT INTO usuarios (nombre, username, email, edad, password) VALUES (?,?,?,?,?)', [nombre, username, email, edad, password], (err, rows) => {
             if (err) return reject(err);
             resolve(rows);
         });
@@ -20,9 +20,25 @@ const mostrarUsuarioPorId = (pUsuarioId) => {
     })
 }
 
+const loginUsuario = (pUsername) => {
+    return new Promise((resolve, reject) => {
+        db.query('select * from usuarios where username = ?', [pUsername], (err, row) => {
+            if (err) return reject(err);
+            if (row) {
+                resolve(row);
+            } else {
+                reject('Usuario no registrado');
+            }
+        });
+    });
+}
+
+
+
 
 
 module.exports = {
     nuevoUsuario: nuevoUsuario,
-    mostrarUsuarioPorId: mostrarUsuarioPorId
+    mostrarUsuarioPorId: mostrarUsuarioPorId,
+    loginUsuario: loginUsuario
 }
