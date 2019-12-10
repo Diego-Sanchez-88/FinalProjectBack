@@ -1,13 +1,13 @@
 const nuevoRelato = ({ titulo, texto, etiquetas }) => {
     return new Promise((resolve, reject) => {
-        db.query('INSERT INTO relatos (título, texto, etiquetas) VALUES (?,?,?)', [titulo, texto, etiquetas], (err, rows) => {
+        db.query('INSERT INTO relatos (titulo, texto, etiquetas) VALUES (?,?,?)', [titulo, texto, etiquetas], (err, rows) => {
             if (err) reject(err);
             resolve(rows);
         });
     });
 }
 
-const getAll = () => {
+const getAllRelatos = () => {
     return new Promise((resolve, reject) => {
         db.query('SELECT * FROM relatos', (err, rows) => {
             if (err) reject(err);
@@ -19,5 +19,5 @@ const getAll = () => {
 
 module.exports = {
     nuevoRelato: nuevoRelato,
-    getAll: getAll
+    getAllRelatos: getAllRelatos
 }

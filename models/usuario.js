@@ -37,6 +37,8 @@ const loginUsuario = (pUsername) => {
 
 
 
+
+
 module.exports = {
     nuevoUsuario: nuevoUsuario,
     mostrarUsuarioPorId: mostrarUsuarioPorId,

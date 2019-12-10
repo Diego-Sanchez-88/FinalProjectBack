@@ -5,7 +5,7 @@ const Relato = require('../models/relato');
 
 router.get('/', async (req, res) => {
     // res.send('se ven todos los relatos'); --> funciona en http://localhost:3000/relatos
-    const rows = await Relato.getAll();
+    const rows = await Relato.getAllRelatos();
     res.json(rows);
 });
 
