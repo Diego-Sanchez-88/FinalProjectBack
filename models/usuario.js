@@ -20,6 +20,15 @@ const mostrarUsuarioPorId = (pUsuarioId) => {
     })
 }
 
+const getByEmail = (pEmail) => {
+    return new Promise((resolve, reject) => {
+        db.query('select * from usuarios where email = ?', [pEmail], (err, rows) => {
+            if (err) reject(err);
+            resolve(rows);
+        });
+    });
+}
+
 const loginUsuario = (pUsername) => {
     return new Promise((resolve, reject) => {
         db.query('select * from usuarios where username = ?', [pUsername], (err, row) => {
@@ -33,6 +42,19 @@ const loginUsuario = (pUsername) => {
     });
 }
 
+const relatosUsuario = (pUsuarioId) => {
+    return new Promise((resolve, reject) => {
+        db.query('select * from relatos where fk_usuario = ?', [pUsuarioId], (err, rows) => {
+            if (err) return reject(err);
+            if (rows) {
+                resolve(rows);
+            } else {
+                reject('Este usuario no tiene relatos');
+            }
+        })
+    });
+}
+
 
 
 
@@ -42,5 +64,7 @@ const loginUsuario = (pUsername) => {
 module.exports = {
     nuevoUsuario: nuevoUsuario,
     mostrarUsuarioPorId: mostrarUsuarioPorId,
-    loginUsuario: loginUsuario
+    getByEmail: getByEmail,
+    loginUsuario: loginUsuario,
+    relatosUsuario: relatosUsuario
 }

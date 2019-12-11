@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-// const jwt = require('jwt-simple');
-// const moment = require('moment');
+const jwt = require('jwt-simple');
+const moment = require('moment');
+const middleware = require('../middleware');
+
 
 const Usuario = require('../../models/usuario');
 
@@ -21,19 +23,10 @@ router.post('/registro', async (req, res) => {
     //     });
 });
 
-router.get('/:usuarioId', (req, res) => {
-    // console.log(req.params.usuarioId);
-    Usuario.mostrarUsuarioPorId(req.params.usuarioId)
-        .then(row => {
-            res.send(row)
-        }).catch(err => {
-            console.log(err);
-        });
-});
-// esto funciona en GET http://localhost:3000/api/usuario/:id
+
 
 router.post('/login', (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     Usuario.loginUsuario(req.body.username)
         .then(row => {
             // console.log(row); 
@@ -41,9 +34,12 @@ router.post('/login', (req, res) => {
                 // console.log('login mal');
                 res.json({ error: 'login mal' });
             } else {
-                if (row[0].password === req.body.password) {
+                console.log(row[0].password, req.body.password);
+                const iguales = bcrypt.compareSync(req.body.password, row[0].password);
+                if (iguales) {
                     // console.log('exito');
-                    res.json({ success: 'éxito' });
+                    res.json({ success: createToken(row[0]) });
+                    // FFUUNNCCIIOOOOONAAAAAAAAAAAAAAAAA !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 } else {
                     // console.log('login incorrecto');
                     res.json({ error: 'login incorrecto' });
@@ -53,6 +49,39 @@ router.post('/login', (req, res) => {
 });
 // esto funciona en POST  http://localhost:3000/api/usuario/login en postman
 
+const createToken = (usuario) => {
+    let payload = {
+        usuarioId: usuario.id,
+        createdAt: moment().unix(),
+        expiresAt: moment().add(120, 'minutes').unix()
+    }
+    return jwt.encode(payload, process.env.TOKEN_KEY);
+}
+
+router.get('/relatos', middleware.checkToken, (req, res) => {
+    // console.log(req.body);  // --> esto saca el username y el password (sin encriptar ni ná)
+    // res.send('funciona?');  --> esto funciona
+    // Usuario.relatosUsuario(req.params)
+    console.log(req.usuarioId); // --> esto devuelve la id del usuario
+    Usuario.relatosUsuario(req.usuarioId)
+        .then(rows => {
+            res.send(rows)
+        }).catch(err => {
+            console.log(err);
+        });
+    // esto funciona en GET  http://localhost:3000/api/usuario/23/relatos
+})
+
+router.get('/', middleware.checkToken, (req, res) => {
+    // console.log(req.params.usuarioId);
+    Usuario.mostrarUsuarioPorId(req.usuarioId)
+        .then(row => {
+            res.send(row)
+        }).catch(err => {
+            console.log(err);
+        });
+});
+// esto funciona en GET http://localhost:3000/api/usuario/:id
 
 module.exports = router;
 

@@ -1,6 +1,7 @@
-const nuevoRelato = ({ titulo, texto, etiquetas }) => {
+const nuevoRelato = ({ titulo, texto, etiquetas }, pUsuarioId) => {
     return new Promise((resolve, reject) => {
-        db.query('INSERT INTO relatos (titulo, texto, etiquetas) VALUES (?,?,?)', [titulo, texto, etiquetas], (err, rows) => {
+        db.query('INSERT INTO relatos (titulo, texto, etiquetas, fk_usuario) VALUES (?,?,?,?)', [titulo, texto, etiquetas, pUsuarioId], (err, rows) => {
+            console.log(rows);
             if (err) reject(err);
             resolve(rows);
         });
