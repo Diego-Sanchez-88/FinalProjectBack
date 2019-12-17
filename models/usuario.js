@@ -55,6 +55,32 @@ const relatosUsuario = (pUsuarioId) => {
     });
 }
 
+const updateUsuario = ({ nombre, username, email, edad, password }, pUsuarioId) => {
+    // console.log('entra QUERY')
+    return new Promise((resolve, reject) => {
+        db.query('UPDATE usuarios SET nombre = ?, username = ?, email = ?, edad = ?, password = ? WHERE id = ?', [nombre, username, email, edad, password, pUsuarioId], (err, row) => {
+            // console.log(err);
+            if (err) return reject(err);
+            if (row) {
+                // console.log(row);
+                resolve(row);
+            } else {
+                reject('No se puede editar el usuario');
+            }
+        })
+    })
+}
+
+const eliminarUsuario = (pUsuarioId) => {
+    return new Promise((resolve, reject) => {
+        db.query('DELETE FROM usuarios WHERE id = ?', [pUsuarioId], (err, result) => {
+            // console.log(result);
+            if (err) reject(err);
+            resolve(result);
+        });
+    });
+}
+
 
 
 
@@ -66,5 +92,7 @@ module.exports = {
     mostrarUsuarioPorId: mostrarUsuarioPorId,
     getByEmail: getByEmail,
     loginUsuario: loginUsuario,
-    relatosUsuario: relatosUsuario
+    relatosUsuario: relatosUsuario,
+    updateUsuario: updateUsuario,
+    eliminarUsuario: eliminarUsuario
 }

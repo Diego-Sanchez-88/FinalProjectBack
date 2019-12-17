@@ -14,7 +14,6 @@ const checkToken = (req, res, next) => {
     } catch (err) {
         return res.json({ error: 'El token es inválido' });
     }
-    console.log(payload)
 
     if (moment().unix() > payload.expiresAt) {
         return res.json({ error: 'El token está caducado' });
