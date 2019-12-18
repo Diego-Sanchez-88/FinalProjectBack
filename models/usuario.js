@@ -81,6 +81,26 @@ const eliminarUsuario = (pUsuarioId) => {
     });
 }
 
+const getUsuarioUsername = (pUsuarioUsername) => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM usuarios WHERE username = ?', [pUsuarioUsername], (err, result) => {
+            console.log(result);
+            if (err) reject(err);
+            resolve(result);
+        });
+    });
+}
+
+// const relatosUsername = (pRelatosFKusuario) => {
+//     return new Promise((resolve, reject) => {
+//         db.query('SELECT * FROM relatos WHERE fk_usuario = ?', [pRelatosFKusuario], (err, result) => {
+//             console.log(result + 'del modelo');
+//             // if (err) reject(err);
+//             // resolve(result);
+//         });
+//     });
+// }
+
 
 
 
@@ -94,5 +114,7 @@ module.exports = {
     loginUsuario: loginUsuario,
     relatosUsuario: relatosUsuario,
     updateUsuario: updateUsuario,
-    eliminarUsuario: eliminarUsuario
+    eliminarUsuario: eliminarUsuario,
+    getUsuarioUsername: getUsuarioUsername,
+    // relatosUsername: relatosUsername
 }

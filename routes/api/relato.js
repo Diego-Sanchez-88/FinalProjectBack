@@ -25,6 +25,17 @@ router.post('/borrar', (req, res) => {
         });
 });
 
+router.post('/genero', (req, res) => {
+    // console.log(req.body); // devuelve [Object: null prototype] {titulo: 'jolin', texto: 'algo hay que cambiar el', 'genero\n': 'jiuo'}
+    Relato.getRelatosGenero(req.body.genero)
+        .then(result => {
+            // res.send(result); // en POST http://localhost:3000/api/relato/genero funciona para el genero que se ponga.
+            res.json(result);
+        }).catch(err => {
+            console.log(err);
+        });
+});
+
 
 
 module.exports = router;

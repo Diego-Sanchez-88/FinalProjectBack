@@ -85,21 +85,41 @@ router.get('/', middleware.checkToken, (req, res) => {
 
 router.post('/update', middleware.checkToken, (req, res) => {
     // console.log(req.body)
+    req.body.password = bcrypt.hashSync(req.body.password, 10);
     Usuario.updateUsuario(req.body, req.usuarioId)
         // console.log(req.body)
         .then(result => {
             // console.log('RESULT')
             res.json(result);  // DEVUELVE JSON AL ANGULAR !!!!!!!!!!!, no redireccionar en express
+            // res.json(createToken(row[0]));  -->>>> ASÏ ?!?!?!?!?!
         }).catch(err => {
             console.log(err);
         });
 });
 
-router.post('/eliminar', (req, res) => {
-    Usuario.eliminarUsuario(req.body.id)
+router.post('/eliminar', middleware.checkToken, (req, res) => {
+    Usuario.eliminarUsuario(req.usuarioId)
         .then(result => {
-            res.json(result); // en POST http://localhost:3000/api/usuario/eliminar funciona para el id que se ponga.
+            // res.json(result); // en POST http://localhost:3000/api/usuario/eliminar funciona para el id que se ponga.
             res.json(result);
+        }).catch(err => {
+            console.log(err);
+        });
+});
+
+router.post('/username', (req, res) => {
+    // console.log(req.body); // devuelve: [Object: null prototype] { username: 'elMendigo' }
+    // console.log(req.body.username); // devuelve el username correcto. Pero en el postman no está funcionando.
+    Usuario.getUsuarioUsername(req.body.username)
+        .then(result => {
+            // console.log(result); // devuelve objeto con un json con los datos del usuario.
+            Usuario.relatosUsuario(result[0].id)
+                .then(resRelatos => {
+                    // console.log(resRelatos);
+                    result[0].relatos = resRelatos;
+                    res.json(result[0]);
+                })
+
         }).catch(err => {
             console.log(err);
         });
